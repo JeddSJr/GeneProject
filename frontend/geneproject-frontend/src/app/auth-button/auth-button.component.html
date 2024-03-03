@@ -1,1 +1,9 @@
-<button (click)="loginWithRedirect()">Log in</button>
+<ng-container *ngIf="auth.isAuthenticated$ | async; else loggedOut">
+    <button (click)="logout()">
+        Log out
+    </button>
+</ng-container>
+
+<ng-template #loggedOut>
+    <button (click)="loginWithRedirect()">Log in</button>
+</ng-template>
