@@ -1,0 +1,21 @@
+<p-card styleClass="app-user-form" class="flex-justify-content-center">
+    <form [formGroup]="userForm" (ngSubmit)="submit()" novalidate>
+    <div class="field">
+            <label for="firstName" class="block">First Name</label>
+            <input type="text" pInputText placeholder="First Name" formControlName="firstName"/>
+            <small class="p-error block" *ngIf="
+          userForm.get('firstName')?.invalid && userForm.get('firstName')?.dirty
+        ">
+        First name is required</small>
+    </div>
+    <div class="field">
+      <label for="lastName" class="block">Last Name</label>
+      <input type="text" pInputText placeholder="Last Name" formControlName="lastName" />
+    </div>
+    <div class="field">
+        <label for="ethnicity" class="block">Ethnic background</label>
+        <p-dropdown formControlName="selectedEthnicity" [options]="ethnicityOptions" optionLabel="name" placeholder="Select your ethnicity"></p-dropdown>
+    </div>
+
+    </form>
+</p-card>

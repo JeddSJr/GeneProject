@@ -1,6 +1,6 @@
 <div *ngIf="!loggedIn">
     <p>Please sign in.</p>
 </div>
-<div *ngIf="loggedIn">
-    <p>Needs a home form</p>
+<div *ngIf="!loggedIn">
+    <app-user-form></app-user-form>
 </div>
