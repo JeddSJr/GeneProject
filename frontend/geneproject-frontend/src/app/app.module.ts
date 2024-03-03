@@ -7,7 +7,7 @@ import {MenubarModule} from 'primeng/menubar';
 import {InputTextModule} from 'primeng/inputtext'
 import {CardModule} from 'primeng/card';
 import {ReactiveFormsModule} from '@angular/forms'; 
-import {DropdownModule} from 'primeng/dropdown';
+import { DropdownModule } from "primeng/dropdown"; 
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';

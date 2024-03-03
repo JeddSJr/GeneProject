@@ -6,16 +6,40 @@
             <small class="p-error block" *ngIf="
           userForm.get('firstName')?.invalid && userForm.get('firstName')?.dirty
         ">
-        First name is required</small>
+        Your First name is required</small>
     </div>
     <div class="field">
       <label for="lastName" class="block">Last Name</label>
       <input type="text" pInputText placeholder="Last Name" formControlName="lastName" />
     </div>
     <div class="field">
-        <label for="ethnicity" class="block">Ethnic background</label>
-        <p-dropdown formControlName="selectedEthnicity" [options]="ethnicityOptions" optionLabel="name" placeholder="Select your ethnicity"></p-dropdown>
+        <label for="ethnicity" class="block">Please select: </label>
+        <p-dropdown
+            [options]="ethnicityOptions" 
+            placeholder="Your ethnicity"
+            optionLabel="name"
+            formControlName="ethnicity"
+            [showClear]="true"> 
+        </p-dropdown> 
+    </div>
+    <div class="field">
+        <label for="height" class="block">Height</label>
+        <input type="number" pInputText placeholder="Height (cm)" formControlName="height"/>
+        <small class="p-error block" *ngIf="
+      userForm.get('height')?.invalid && userForm.get('height')?.dirty 
+    ">
+   A correct height is required</small>
+    </div>
+    <div class="field">
+        <label for="weight" class="block">Weight</label>
+        <input type="number" pInputText placeholder="Weight (cm)" formControlName="weight"/>
+        <small class="p-error block" *ngIf="
+      userForm.get('weight')?.invalid && userForm.get('weight')?.dirty 
+    ">
+        A correct weight is required</small>
     </div>
 
+    <br>
+    <button pButton type="submit" label="Submit" [disabled]="userForm.invalid"></button>
     </form>
 </p-card>

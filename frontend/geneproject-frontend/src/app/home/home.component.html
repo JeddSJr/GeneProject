@@ -1,6 +1,12 @@
 <div *ngIf="!loggedIn">
     <p>Please sign in.</p>
 </div>
-<div *ngIf="!loggedIn">
+<div *ngIf="loggedIn">
+    <div class="hero-image">
+        <div class="hero-text">
+          <h1>Join Gene Level</h1>
+          <p>Personalize your nutrition to your genetic needs!</p>
+        </div>
+      </div> 
     <app-user-form></app-user-form>
 </div>
