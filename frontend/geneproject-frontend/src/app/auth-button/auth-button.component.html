@@ -1,9 +1,23 @@
 <ng-container *ngIf="auth.isAuthenticated$ | async; else loggedOut">
     <button (click)="logout()">
-        Log out
+        <div style="display: flex; align-items: center;">
+            <div style="flex-shrink: 0; line-height: 0;" class="login-text">
+                <img src="../../assets/enter.png" alt="ms icon" width="25em" height="25em" class="login-logo" />
+                Log out
+            </div>
+            <span style="width: 12px;"></span>
+        </div>
     </button>
 </ng-container>
 
 <ng-template #loggedOut>
-    <button (click)="loginWithRedirect()">Log in</button>
+    <button (click)="loginWithRedirect()">
+        <div style="display: flex; align-items: center;">
+            <div style="flex-shrink: 0; line-height: 0;" class="login-text">
+                <img src="../../assets/enter.png" alt="ms icon" width="25em" height="25em" class="login-logo" />
+                Auth0 Log in
+            </div>
+            <span style="width: 12px;"></span>
+        </div>   
+    </button>
 </ng-template>

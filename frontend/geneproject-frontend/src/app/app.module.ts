@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AuthModule } from '@auth0/auth0-angular';
+import { ButtonModule } from 'primeng/button';
+import {MenubarModule} from 'primeng/menubar';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,11 +16,13 @@ import { AuthButtonComponent } from './auth-button/auth-button.component';
     AppComponent,
     HomeComponent,
     NavbarComponent,
-    AuthButtonComponent
+    AuthButtonComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    ButtonModule,
+    MenubarModule,
     AuthModule.forRoot({
       domain: 'dev-jz7lwt5lmlxvurxt.us.auth0.com',
       clientId: 'FPoqV6Tf7mvnhroEZ5wqSOhbrs3G0P2k',
