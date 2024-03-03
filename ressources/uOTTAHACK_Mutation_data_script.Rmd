@@ -1,0 +1,133 @@
+---
+title: "Mutation_data"
+author: "GSEA"
+date: "2024-01-11"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(ggplot2)
+library(readr)
+library(BiocStyle)
+library(MutationalPatterns)
+library(maftools)
+library(BSgenome.Hsapiens.UCSC.hg19)
+library(DelayedArray)
+library(NMF)
+
+```
+```{r}
+setwd("/Users/awsalmirahmad/Downloads/TMM30092/aml_target_2018_pub")
+file_loc <- "/Users/awsalmirahmad/Downloads/TMM30092/aml_target_2018_pub"
+
+```
+```{r}
+#path to Mutation File
+
+aml_target.maf = system.file('extdata', 'aml_target_data_mutations.txt', package = 'maftools')
+print(aml_target.maf)
+
+#Read
+
+
+aml_target = read.maf(maf = aml_target.maf)
+
+```
+```{r}
+#aml_target
+```
+```{r}
+library("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
+```
+```{r}
+#Making trinucleotide matrix
+
+aml_target111 = trinucleotideMatrix(maf = aml_target, prefix = 'chr', add = TRUE, ref_genome = "BSgenome.Hsapiens.UCSC.hg19")
+```
+```{r}
+(aml_target111)
+```
+```{r}
+write.csv(aml_target111$nmf_matrix, file = "aml_targetMutationMatrix.csv")
+
+```
+```{r}
+data <- read.csv("aml_targetMutationMatrix.csv")
+class(data)
+
+#transpose the data 
+t_data <- t(data)
+print(t_data)
+t_data
+
+```
+```{r}
+# assuming rownames(t_data) gets you c('X', 'A.C.A.A', 'A.C.T.A', ...)
+new_rownames = gsub("(.)\\.(.)\\.(.)\\.(.)", "\\1[\\2>\\3]\\4", rownames(t_data))
+
+rownames(t_data) <- new_rownames
+
+t_data
+write.csv(t_data, file = "aml_target123.csv", row.names = TRUE)
+
+
+#Remove first row V1, V2, V3 manually
+#Remove just X manually
+
+
+```
+
+
+```{r}
+mut_mat2 <- read.csv("aml_target123.csv")
+mut_mat4 <- as.matrix(mut_mat2[,-1]) #Exclude the first column 
+mut_mat4 <- mut_mat4 + 0.0001
+```
+
+```{r}
+#Stricter refitting to overcome overfitting and signature misattribution
+
+signatures = get_known_signatures()
+
+strict_refit <- fit_to_signatures_strict(mut_mat4, signatures, max_delta = 0.004)
+
+
+```
+
+```{r}
+# Assume 'cosmic_signatures' is your COSMIC signature matrix and each signature is named "SBS1", "SBS2", etc.
+
+# Select the signatures you are interested in
+selected_signatures <- signatures[, c("SBS1", "SBS2", "SBS4", "SBS5", "SBS8", "SBS13")]
+
+# Fit your mutation matrix to the selected signatures
+best_subset_refit <- fit_to_signatures_strict(mut_mat4, selected_signatures, max_delta = 0.002, method = "best_subset")
+head(best_subset_refit)
+
+#Transpose the file and save  this file in csv
+
+best_fit_SBS_transposed_data <- t(best_subset_refit$fit_res$contribution)
+
+# Save the transposed data as a CSV file
+write.csv(best_fit_SBS_transposed_data, "best_fit_SBS_transposed_data.csv")
+
+
+class(best_fit_SBS_transposed_data)
+
+#Relative value of each signature for each 108 samples
+
+# Compute relative contribution for transposed data
+SBS_relative_contribution <- best_fit_SBS_transposed_data / apply(best_fit_SBS_transposed_data, 1, sum)
+
+# If there are NaN values because of division by zero, replace them with 0
+SBS_relative_contribution[is.nan(SBS_relative_contribution)] <- 0
+
+# Save relative contribution of transposed data to CSV
+write.csv(SBS_relative_contribution, file = "aml_target_SBS_relative_cptac_contribution.csv")
+
+```
